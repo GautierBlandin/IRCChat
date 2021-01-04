@@ -6,12 +6,12 @@ const ChannelSchema = new mongoose.Schema({
         required: 'Owner is required!',
         ref: 'User'
     },
-    user: [{
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User'
     }],
-    message: [{
+    messages: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'Message'
