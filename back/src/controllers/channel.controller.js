@@ -17,10 +17,9 @@ exports.channel_create_empty = async (req, res) => {
         //if (channelExist) throw "Channel with that name already existing!";
 
         const newChannel = new Channel({
-            "title": title
+            "title": title,
+            "owner": user
         });
-
-        newChannel.owner = user;
 
         await newChannel.save();
 
@@ -153,16 +152,23 @@ exports.channel_delete = async (req, res) => {
  * @desc Add users to specified channel
  * @route POST /channel/addUser/:id
  * @param {Channel id} req.params
- * @param {Array/String users} req.body
+ * @param {Array||String users} req.body
  */
 exports.channel_addUser = async (req, res) => {
     try {
+        const { users } = req.body;
+        if (!users) throw "Users not provided!"
+
         const channel = await Channel.findByIdAndUpdate(req.params.id, {
             $push: {
-                users: req.body.users 
+                users: users
             }
         });
         if (!channel) throw "channel not found!";
+
+        //users.forEach(user => {
+        //    console.log(user);
+        //});
 
         res.json(channel);
     } catch (error) {
