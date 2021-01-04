@@ -137,6 +137,12 @@ exports.channel_delete = async (req, res) => {
     try {
         const channel = await Channel.findByIdAndDelete(req.params.id);
         if(!channel) throw "channel not found!";
+
+        const user = await User.findById(channel.owner);
+
+        user.channels.pop(channel._id);
+
+        await user.save();
     
         res.json(channel);
         console.log('Channel: ' + channel._id + ' deleted successfully!');
