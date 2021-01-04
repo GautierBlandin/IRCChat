@@ -96,12 +96,11 @@ exports.channel_getAll = async (req, res) => {
 /**
  * @desc Channel get specified channel
  * @route GET /channel/getOne/:id
+ * @param Channel id
  */
 exports.channel_getOne = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const channel = await Channel.findById({_id: id});
+        const channel = await Channel.findById({_id: req.params.id});
         if(!channel) throw "channel not found!";
     
         res.json(channel);
@@ -110,7 +109,41 @@ exports.channel_getOne = async (req, res) => {
     }
 }
 
-//TODO EDIT Channel
+/**
+ * @desc Update specified channel
+ * @route PUT /channel/update/:id
+ * @param Channel id
+ */
+exports.channel_update = async (req, res) => {
+    try {
+        const channel = await Channel.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        });
+        if(!channel) throw "channel not found!";
+    
+        res.json(channel);
+        console.log('Channel: ' + channel._id + ' updated successfully!');
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Delete specified channel
+ * @route DELETE /channel/delete/:id
+ * @param Channel id
+ */
+exports.channel_delete = async (req, res) => {
+    try {
+        const channel = await Channel.findByIdAndDelete(req.params.id);
+        if(!channel) throw "channel not found!";
+    
+        res.json(channel);
+        console.log('Channel: ' + channel._id + ' deleted successfully!');
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}
 
 //TODO ADD User to Channel
 
