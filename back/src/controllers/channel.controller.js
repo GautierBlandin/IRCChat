@@ -45,7 +45,6 @@ exports.channel_create_withOne = async (req, res) => {
     try {
         const currentUserId = req.user.id;
         const requestedUserId = req.params.id;
-
         if(currentUserId == requestedUserId) throw "the current user cannot create a channel with himself!";
 
         const currentUser = await User.findById(currentUserId);
@@ -54,6 +53,7 @@ exports.channel_create_withOne = async (req, res) => {
         const requestedUser = await User.findById(requestedUserId);
         if (!requestedUser) throw "Current user or requested user does not exist!";
 
+        // Define the title of new channel
         const title = currentUser.username + ', ' + requestedUser.username;
 
         const newChannel = new Channel({
@@ -61,6 +61,7 @@ exports.channel_create_withOne = async (req, res) => {
         })
 
         newChannel.owner = currentUser;
+        newChannel.users.push(currentUser);
         newChannel.users.push(requestedUser);
 
         await newChannel.save();
@@ -82,9 +83,14 @@ exports.channel_create_withOne = async (req, res) => {
  * @route GET /channel/getAll
  */
 exports.channel_getAll = async (req, res) => {
-    const channel = await Channel.find();
+    try {
+        const channel = await Channel.find();
+        if(!channel) throw "There are no channels!";
 
-    res.json(channel);
+        res.status(200).json(channel);
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
 }
 
 /**
@@ -92,9 +98,22 @@ exports.channel_getAll = async (req, res) => {
  * @route GET /channel/getOne/:id
  */
 exports.channel_getOne = async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const channel = await Channel.findById({_id: id});
-
-    res.json(channel);
+        const channel = await Channel.findById({_id: id});
+        if(!channel) throw "channel not found!";
+    
+        res.json(channel);
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
 }
+
+//TODO EDIT Channel
+
+//TODO ADD User to Channel
+
+//TODO Kick specified User on Channel
+
+//TODO DELETE Channel
