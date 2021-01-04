@@ -14,15 +14,38 @@ const corsOptions = {origin: "*"};
 // Load CORS with options
 app.use(cors(corsOptions));
 
+// Parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 // Parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-// Parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Function routes
 app.use('/auth', require('./routes/auth.routes'));
+app.use('/channel', require('./routes/channel.routes'));
 
-app.listen(process.env.SERVER_PORT, function () {
+const server = app.listen(process.env.SERVER_PORT, function () {
     console.log("\x1b[44m%s\x1b[0m", "Starting Server on " + process.env.SERVER_PORT + " port");
 });
+
+// Socket IO 
+const io = require('socket.io')(server);
+const jwt = require('jsonwebtoken');
+
+io.use(async(socket, next)=> {
+    try {
+        const token = socket.handshake.query.token;
+        const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        socket.userId = payload.id;
+        next();
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log("Connected: " + socket.userId);
+
+    socket.on('disconnect', () => {
+        console.log("Disconnected: " + socket.userId);
+    })
+})

@@ -60,7 +60,7 @@ exports.auth_login = async (req, res) => {
             if(user) {
                 if(await bcrypt.compare(req.body.password, user.password)){
                     
-                    const token = jwt.sign({_id: user._id, role: user.role}, process.env.ACCESS_TOKEN_SECRET);
+                    const token = jwt.sign({id: user.id}, process.env.ACCESS_TOKEN_SECRET);
 
                     res.header('auth-token', token).send(token);
                 } else {
