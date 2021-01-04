@@ -17,7 +17,6 @@ exports.auth_register = async (req, res) => {
                     req.body.password = cryptedPassword;
                     req.body.role = "user";
                     req.body.isActive = true;
-                    req.body.isApplicant = false;
 
                     User.create(req.body).then(
                         (user) => {
