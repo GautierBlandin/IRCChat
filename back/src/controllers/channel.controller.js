@@ -4,7 +4,7 @@ const User = require('../models/user.model');
 /**
  * @desc Channel create an empty Channel with current user informations and specified title
  * @route POST /channel/create
- * @body Channel(title)
+ * @body Channel
  */
 exports.channel_create_empty = async (req, res) => {
     try {
@@ -35,6 +35,12 @@ exports.channel_create_empty = async (req, res) => {
     }
 }
 
+/**
+ * @desc Create Channel with current user at owner and requested user specified in params
+ * @route POST /channel/create_withOne/:id
+ * @param User 
+ * @body Channel
+ */
 exports.channel_create_withOne = async (req, res) => {
     try {
         const currentUserId = req.user.id;
@@ -74,7 +80,6 @@ exports.channel_create_withOne = async (req, res) => {
 /**
  * @desc Channel get all
  * @route GET /channel/getAll
- * @param Null
  */
 exports.channel_getAll = async (req, res) => {
     const channel = await Channel.find();
