@@ -1,26 +1,34 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
+    channel: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Channel'
+    }],
+    message: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
+    }],
     firstname: {
         type: String,
-        required: true
+        required: 'Firstname is required!'
     },
     lastname: {
         type: String,
-        required: true
+        required: 'Lastname is required!'
     },
     email: {
         type: String,
-        required: true,
+        required: 'Email is required!',
         unique: true
     },
     password: {
         type: String,
-        required: true
+        required: 'Password is required!'
     },
     role: {
         type: String,
-        required: true,
+        required: 'Role is required!',
         default: 'user',
         enum: ["user", "admin"]
     },
