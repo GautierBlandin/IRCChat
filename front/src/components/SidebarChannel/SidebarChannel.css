@@ -1,0 +1,12 @@
+.SidebarChannel {}
+
+.channelName{
+    font-size: 20px;
+    color : black;
+}
+
+.lastMessage{
+    font-size: 12px;
+    color : darkgrey;
+    height : 17px;
+}
