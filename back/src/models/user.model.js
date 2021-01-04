@@ -3,19 +3,21 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
     channel: [{
         type: mongoose.Schema.Types.ObjectId,
+        required: false,
         ref: 'Channel'
     }],
     message: [{
         type: mongoose.Schema.Types.ObjectId,
+        required: false,
         ref: 'Message'
     }],
-    firstname: {
+    username: {
         type: String,
-        required: 'Firstname is required!'
+        required: 'Username is required!'
     },
-    lastname: {
+    bio: {
         type: String,
-        required: 'Lastname is required!'
+        required: false
     },
     email: {
         type: String,
