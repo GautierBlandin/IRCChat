@@ -39,3 +39,79 @@ exports.message_create = async (req, res) => {
         res.status(500).json("Error: " + error);
     }
 }
+
+/**
+ * @desc Get specified message
+ * @route GET /message/getOne/:id
+ * @param {Message id} req.params
+ */
+exports.message_getOne = async (req, res) => {
+    try {
+        const message = await Message.findById(req.params.id);
+        if (!message) throw "message not found!";
+
+        res.json(message);
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Get all messages
+ * @route GET /message/getAll
+ */
+exports.message_getAll = async (req, res) => {
+    try {
+        const message = await Message.find();
+        if (!message) throw "There are no messages!";
+
+        res.status(200).json(message);
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Update specified message
+ * @route PUT /message/update/:id
+ * @param {Message id} req.params
+ */
+exports.message_update = async (req, res) => {
+    try {
+        const message = await Message.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        });
+        if (!message) throw "message not found!";
+
+        res.json(message);
+        console.log('message: ' + message._id + ' updated successfully!');
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Delete specified message
+ * @route DELETE /message/delete/:id
+ * @param {Message id} req.params
+ */
+exports.message_delete = async (req, res) => {
+    try {
+        const message = await Message.findByIdAndDelete(req.params.id);
+        if (!message) throw "message not found!";
+
+        const user = await User.findById(message.user);
+        const channel = await Channel.findById(message.channel);
+
+        user.messages.pop(message._id);
+        channel.messages.pop(message._id);
+
+        await user.save();
+        await channel.save();
+
+        res.json(message);
+        console.log('Message: ' + message._id + ' deleted successfully!');
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}

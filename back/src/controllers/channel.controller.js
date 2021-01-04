@@ -2,7 +2,7 @@ const Channel = require('../models/channel.model');
 const User = require('../models/user.model');
 
 /**
- * @desc Channel create an empty Channel with current user informations and specified title
+ * @desc Create an empty Channel with current user informations and specified title
  * @route POST /channel/create
  */
 exports.channel_create_empty = async (req, res) => {
@@ -76,7 +76,7 @@ exports.channel_create_withOne = async (req, res) => {
 }
 
 /**
- * @desc Channel get all
+ * @desc Get all channels
  * @route GET /channel/getAll
  */
 exports.channel_getAll = async (req, res) => {
@@ -91,7 +91,7 @@ exports.channel_getAll = async (req, res) => {
 }
 
 /**
- * @desc Channel get specified channel
+ * @desc Get specified channel
  * @route GET /channel/getOne/:id
  * @param {Channel id} req.params
  */
@@ -175,5 +175,3 @@ exports.channel_addUser = async (req, res) => {
         res.status(404).json("Error: " + error);
     }
 }
-
-//TODO Kick specified User on Channel
