@@ -1,5 +1,24 @@
 .Sidebar {
-    overflow-y: scroll;
+    overflow-y: overlay;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius : 4px;
+}
+
+.Sidebar:hover::-webkit-scrollbar-thumb {
+    background: grey;
 }
 
 .Card:hover{

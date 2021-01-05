@@ -76,7 +76,7 @@ export default class Sidebar extends React.Component{
 }
 
 function Sidebar_top() {
-    return <div className="p-1 m-1">
+    return <div className="p-1 m-1 text-center">
         Channels
     </div>;
 }

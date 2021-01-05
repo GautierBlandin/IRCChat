@@ -42,7 +42,7 @@ export default class ChatBody extends React.Component{
     render(){
 
         if(Object.entries(this.props.shownChannel).length === 0){
-            return(<div className="pt-4">
+            return(<div className="pt-4 position-relative">
                 {this.Message(this.message1)}
                 {this.Message(this.message2)}
                 {this.Message(this.message3)}
