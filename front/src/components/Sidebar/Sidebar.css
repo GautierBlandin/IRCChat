@@ -1,1 +1,5 @@
 .Sidebar {}
+
+.Card:hover{
+    background: lightgray;
+}

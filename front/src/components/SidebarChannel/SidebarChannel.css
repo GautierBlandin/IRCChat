@@ -1,4 +1,14 @@
-.SidebarChannel {}
+.SidebarChannel {
+}
+
+
+.bg{
+    background: lightgray;
+}
+
+.bg:hover{
+    background: darkgrey;
+}
 
 .channelName{
     font-size: 20px;
@@ -10,3 +20,4 @@
     color : darkgrey;
     height : 17px;
 }
+
