@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 
 /**
  * @desc Create User as admin panel
- * @route POST /message/create/:channelId
+ * @route POST /user/create/:channelId
  * @param {User user} req.body
  */
 exports.user_create = async (req, res) => {
@@ -61,7 +61,7 @@ exports.user_update = async (req, res) => {
         if (!user) throw "user not found!";
 
         res.status(200).json(user);
-        console.log('user: ' + user._id + ' updated successfully!');
+        console.log('User: ' + user._id + ' updated successfully!');
     } catch (error) {
         res.status(404).json("Error: " + error);
     }
@@ -78,7 +78,7 @@ exports.user_delete = async (req, res) => {
         if (!user) throw "user not found!";
 
         res.json(user);
-        console.log('Message: ' + user._id + ' deleted successfully!');
+        console.log('User: ' + user._id + ' deleted successfully!');
     } catch (error) {
         res.status(404).json("Error: " + error);
     }
