@@ -12,20 +12,28 @@ export default class MainPage extends React.Component{
         super(props);
         this.state = {
             shownChannel : {},
+            shownChannelId : '',
             availableChannels : [],
             user : {}
         }
     }
 
+    handleChannelClick = (channelId) => {
+        this.setState({shownChannelId : channelId})
+    }
+
     render(){
+
+
+
         return(<div className="full-height">
                 <Header/>
             <Row className = "full-height">
                 <Col span = {5} className="full-height">
-                    <Sidebar/>
+                    <Sidebar onChannelClick = {this.handleChannelClick}/>
                 </Col>
                 <Col span = {19} className={"full-height"}>
-                    <Chat shownChannel = {this.state.shownChannel}/>
+                    <Chat shownChannel = {this.state.shownChannel} shownChannelId = {this.state.shownChannelId}/>
                 </Col>
             </Row>
         </div>)

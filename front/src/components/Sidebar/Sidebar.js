@@ -11,45 +11,50 @@ export default class Sidebar extends React.Component{
 
     channelsInformations = []
 
+    handleChannelClick = (e, id) => {
+        e.preventDefault();
+        this.props.onChannelClick(id);
+    }
+
     render(){
 
         this.channelsInformations.push({
-            _id: 1,
+            id: 1,
             channelName : "Les bg du 67",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 2,
+            id: 2,
             channelName : "Les bg du 67",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 3,
+            id: 3,
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 4,
+            id: 4,
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 4,
+            id: 5,
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 4,
+            id: 6,
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 4,
+            id: 7,
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
         this.channelsInformations.push({
-            _id: 4,
+            id: 8,
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
@@ -58,7 +63,7 @@ export default class Sidebar extends React.Component{
 
         for(let index = 0; index < this.channelsInformations.length; index++){
             let channel = this.channelsInformations[index];
-            renderedChannels.push(<Card  size="small" className="text-left Card rounded">
+            renderedChannels.push(<Card size="small" className="text-left Card rounded" onClick={e => this.handleChannelClick(e, channel.id)}>
                 <h6>{channel.channelName}</h6>
                 {channel.lastMessage}
             </Card>)

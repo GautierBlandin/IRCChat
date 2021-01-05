@@ -14,7 +14,7 @@ export default class Chat extends React.Component{
         return(<div className={"full-height"}>
             <ChatHeader {...this.props}/>
             <ChatBody {...this.props}/>
-            <ChatInput/>
+            <ChatInput {...this.props}/>
         </div>)
     }
 }
