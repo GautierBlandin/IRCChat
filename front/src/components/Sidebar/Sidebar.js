@@ -33,6 +33,26 @@ export default class Sidebar extends React.Component{
             channelName : "WTF PK Y PAS DE NOM",
             lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
         })
+        this.channelsInformations.push({
+            _id: 4,
+            channelName : "WTF PK Y PAS DE NOM",
+            lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
+        })
+        this.channelsInformations.push({
+            _id: 4,
+            channelName : "WTF PK Y PAS DE NOM",
+            lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
+        })
+        this.channelsInformations.push({
+            _id: 4,
+            channelName : "WTF PK Y PAS DE NOM",
+            lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
+        })
+        this.channelsInformations.push({
+            _id: 4,
+            channelName : "WTF PK Y PAS DE NOM",
+            lastMessage : "Quand est-ce qu'on se voit  aaa aaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaa?"
+        })
 
         let renderedChannels = [];
 
@@ -45,7 +65,7 @@ export default class Sidebar extends React.Component{
 
         }
 
-        return(<div>
+        return(<div className={"full-height Sidebar scrollable-container"}>
             {Sidebar_top()}
             <Input.Search size = "medium" allowClear="true" enterButton="Search"/>
             {renderedChannels}

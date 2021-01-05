@@ -18,7 +18,7 @@ export default class ChatBody extends React.Component{
     message2 = {
         user_id : 2,
         user_nickname : 'Gautier',
-        message : 'Regarde, on a un super front !',
+        message : 'Regarde, on a un super front ! And today we are having a really great day here in New-York ! The sun is shining, the birds are singing',
         is_user : true,
     }
 
@@ -31,21 +31,18 @@ export default class ChatBody extends React.Component{
 
     Message = (message) =>{
         let cssClass = (message.is_user ? "message" : "messageOther")
-        return(<Row className={"m-3 p-2 " + cssClass}>
-            <Col span = {3}>
-                <Avatar size={64} icon={<UserOutlined />} />
-            </Col>
-            <Col span = {12}>
-                {message.user_nickname} :
-                <br/>{message.message}
-            </Col>
-        </Row>)
+        let cssClass2 = (message.is_user? "messageContainer" : "messageOtherContainer")
+        return(<div className={cssClass2}>
+            <div className={cssClass}>
+                {message.user_nickname}: {message.message}
+         </div>
+        </div>)
     }
 
     render(){
 
         if(Object.entries(this.props.shownChannel).length === 0){
-            return(<div>
+            return(<div className="pt-4">
                 {this.Message(this.message1)}
                 {this.Message(this.message2)}
                 {this.Message(this.message3)}

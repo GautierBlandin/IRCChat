@@ -18,14 +18,13 @@ export default class MainPage extends React.Component{
     }
 
     render(){
-        return(<div>
+        return(<div className="full-height">
                 <Header/>
-
-            <Row>
-                <Col span = {5}>
+            <Row className = "full-height">
+                <Col span = {5} className="full-height">
                     <Sidebar/>
                 </Col>
-                <Col span = {19}>
+                <Col span = {19} className={"full-height"}>
                     <Chat shownChannel = {this.state.shownChannel}/>
                 </Col>
             </Row>

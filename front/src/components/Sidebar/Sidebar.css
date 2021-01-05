@@ -1,4 +1,6 @@
-.Sidebar {}
+.Sidebar {
+    overflow-y: scroll;
+}
 
 .Card:hover{
     background: lightgray;
