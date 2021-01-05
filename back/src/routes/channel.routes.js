@@ -9,5 +9,7 @@ router.post('/create_with/:id', checkAuth, ChannelController.channel_create_with
 router.put('/update/:id', ChannelController.channel_update);
 router.delete('/delete/:id', ChannelController.channel_delete);
 router.put('/addUser/:id', ChannelController.channel_addUser);
+router.get('/getOne/:id', ChannelController.channel_getOne);
+router.get('/getAll', ChannelController.channel_getAll);
 
 module.exports = router;

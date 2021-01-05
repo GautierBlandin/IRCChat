@@ -166,9 +166,19 @@ exports.channel_addUser = async (req, res) => {
         });
         if (!channel) throw "channel not found!";
 
-        //users.forEach(user => {
-        //    console.log(user);
-        //});
+        if (Array.isArray(users)) {
+            users.forEach(async userId => {
+                let user = User.findById(userId);
+                user.channels.push(channel);
+
+                await user.save();
+            });
+        } else {
+            let user = User.findById(users);
+            user.channels.push(channel);
+            
+            await user.save();
+        }
 
         res.json(channel);
     } catch (error) {
