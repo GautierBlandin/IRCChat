@@ -83,7 +83,7 @@ exports.message_update = async (req, res) => {
         });
         if (!message) throw "message not found!";
 
-        res.json(message);
+        res.status(200).json(message);
         console.log('message: ' + message._id + ' updated successfully!');
     } catch (error) {
         res.status(404).json("Error: " + error);
