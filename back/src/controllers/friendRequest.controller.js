@@ -44,11 +44,11 @@ exports.friendRequest_accept = async (req, res) => {
         const friendRequestId = req.params.id;
 
         const friendRequest = await FriendRequest.findById(friendRequestId);
-        if(!friendRequestId) throw "Friend request does not exist!";
+        if(!friendRequest) throw "Friend request does not exist!";
 
         if(friendRequest.isAccepted) throw "Friend request already accepted!";
 
-        if(currentUserId != friendRequest.userTo) throw "Only requested User can accept friend request!"
+        if(currentUserId != friendRequest.userTo) throw "Only requested User can accept friend request!";
 
         const userFromId = friendRequest.userFrom;
         const userFrom = await User.findById(userFromId);
@@ -73,5 +73,62 @@ exports.friendRequest_accept = async (req, res) => {
         res.status(201).json(friendRequest);
     } catch (error) {
         res.status(500).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Remove selected friend (req.params.id) at current user
+ * @route DELETE /friendRequest/remove/:id
+ * @param {User id} req.params.id
+ */
+exports.friendRequest_delete = async (req, res) => {
+    try {
+        const currentUserId = req.user.id;
+        const friendRequestId = req.params.id;
+
+        const friendRequest = await FriendRequest.findById(friendRequestId);
+        if(!friendRequest) throw "Friend request does not exist!";
+
+        if(currentUserId != friendRequest.userFrom) throw "Only current User can accept delete request!";
+
+        if(friendRequest.isAccepted) throw "Friend request already accepted!";
+
+        await FriendRequest.deleteOne(friendRequest);
+
+        res.json(friendRequest);
+        console.log('FriendRequest: ' + friendRequest._id + ' deleted successfully!');
+    } catch (error) {
+        res.status(500).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Get specified userRequest
+ * @route GET /friendRequest/getOne/:id
+ * @param {FriendRequest id} req.params
+ */
+exports.friendRequest_getOne = async (req, res) => {
+    try {
+        const friendRequest = await FriendRequest.findById(req.params.id);
+        if (!friendRequest) throw "Friend request not found!";
+
+        res.status(200).json(friendRequest);
+    } catch (error) {
+        res.status(404).json("Error: " + error);
+    }
+}
+
+/**
+ * @desc Get all userRequest
+ * @route GET /friendRequest/getAll
+ */
+exports.friendRequest_getAll = async (req, res) => {
+    try {
+        const friendRequest = await FriendRequest.find();
+        if (!friendRequest) throw "There are no friend request!";
+
+        res.status(200).json(friendRequest);
+    } catch (error) {
+        res.status(404).json("Error: " + error);
     }
 }

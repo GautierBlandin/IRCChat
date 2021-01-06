@@ -50,7 +50,7 @@ exports.message_getOne = async (req, res) => {
         const message = await Message.findById(req.params.id);
         if (!message) throw "message not found!";
 
-        res.json(message);
+        res.status(200).json(message);
     } catch (error) {
         res.status(404).json("Error: " + error);
     }
