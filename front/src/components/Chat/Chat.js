@@ -1,5 +1,8 @@
 import React from 'react';
 import './Chat.css';
+import ChatHeader from "./ChatHeader/ChatHeader";
+import ChatBody from "./ChatBody/ChatBody";
+import ChatInput from "./ChatInput/ChatInput";
 
 export default class Chat extends React.Component{
     constructor(props) {
@@ -7,6 +10,11 @@ export default class Chat extends React.Component{
     }
 
     render(){
-        return(<div></div>)
+
+        return(<div className={"full-height"}>
+            <ChatHeader {...this.props}/>
+            <ChatBody {...this.props}/>
+            <ChatInput {...this.props}/>
+        </div>)
     }
 }

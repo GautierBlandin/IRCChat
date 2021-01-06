@@ -1,0 +1,32 @@
+.ChatBody {}
+
+.anticon{
+    vertical-align: 0.1em;
+}
+
+.message,.messageOther{
+    display: inline-block;
+    border-radius: 12px;
+    border-width: 0;
+    background: blue;
+    width: auto;
+    max-width: 66%;
+    color : white;
+    padding: 3px 10px 3px 10px;
+    margin : 5px 0 0 50px;
+}
+
+.messageOther{
+    background: WhiteSmoke;
+    color : black;
+    margin-right: 50px;
+}
+
+.messageContainer{
+
+}
+
+.messageOtherContainer{
+    text-align: right;
+}
+

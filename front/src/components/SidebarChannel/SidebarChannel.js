@@ -9,8 +9,12 @@ export default class SidebarChannel extends React.Component{
         }
     }
 
+    handleClick = () => {
+        alert("clicked")
+    }
+
     render(){
-        return(<div className="bg-light border-0 rounded m-1">
+        return(<div className="border-0 rounded m-1 backgroudtest " onClick={this.handleClick}>
             <div className="channelName overflow-hidden">{this.props.channelInformations.channelName}</div>
             <div className="lastMessage overflow-hidden">{this.props.channelInformations.lastMessage}</div>
         </div>)
