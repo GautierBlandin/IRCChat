@@ -2,9 +2,9 @@ const User = require('../models/user.model');
 const FriendRequest = require('../models/friendRequest.model');
 
 /**
- * @desc Create User as admin panel
- * @route POST /user/create/:channelId
- * @param {User user} req.body
+ * @desc Create friend request with current user (passed in token) Id corresponds to requested user
+ * @route POST /friendRequest/create/:id
+ * @param {User id} req.params.id
  */
 exports.friendRequest_create = async (req, res) => {
     try {
@@ -33,6 +33,11 @@ exports.friendRequest_create = async (req, res) => {
     }
 }
 
+/**
+ * @desc Accept friend request by requested user (token required), Id corresponds to friendRequest selected
+ * @route POST /friendRequest/create/:id
+ * @param {User id} req.params.id
+ */
 exports.friendRequest_accept = async (req, res) => {
     try {
         const currentUserId = req.user.id;
