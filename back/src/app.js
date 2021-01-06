@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use('/auth', require('./routes/auth.routes'));
 app.use('/channel', require('./routes/channel.routes'));
 app.use('/message', require('./routes/message.routes'));
+app.use('/friendRequest', require('./routes/friendRequest.routes'));
 
 const server = app.listen(process.env.SERVER_PORT, function () {
     console.log("\x1b[44m%s\x1b[0m", "Starting Server on " + process.env.SERVER_PORT + " port");

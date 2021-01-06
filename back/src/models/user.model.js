@@ -11,6 +11,16 @@ const UserSchema = new mongoose.Schema({
         required: false,
         ref: 'Message'
     }],
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
+    }],
+    image: {
+        type: String,
+        required: false,
+        default: 'default.png'
+    },
     username: {
         type: String,
         required: 'Username is required!'
