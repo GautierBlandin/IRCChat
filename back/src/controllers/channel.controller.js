@@ -3,7 +3,7 @@ const User = require('../models/user.model');
 
 /**
  * @desc Create an empty Channel with current user informations and specified title
- * @route POST /channel/create
+ * @route POST /channel/
  */
 exports.channel_create_empty = async (req, res) => {
     try {
@@ -21,6 +21,8 @@ exports.channel_create_empty = async (req, res) => {
             "owner": user
         });
 
+        newChannel.users.push(user);
+
         await newChannel.save();
 
         user.channels.push(newChannel);
@@ -37,6 +39,7 @@ exports.channel_create_empty = async (req, res) => {
  * @desc Create Channel with current user at owner and requested user specified in params
  * @route POST /channel/create_withOne/:id
  * @param {User id} req.params
+ * DEPRECATED
  */
 exports.channel_create_withOne = async (req, res) => {
     try {
@@ -77,9 +80,12 @@ exports.channel_create_withOne = async (req, res) => {
 
 /**
  * @desc Get all channels
- * @route GET /channel/getAll
+ * @route GET /channel/
  */
 exports.channel_getAll = async (req, res) => {
+    console.log(req.params)
+    console.log(req.params.id)
+    console.log("get all being requested")
     try {
         const channel = await Channel.find();
         if (!channel) throw "There are no channels!";
@@ -92,12 +98,12 @@ exports.channel_getAll = async (req, res) => {
 
 /**
  * @desc Get specified channel
- * @route GET /channel/getOne/:id
+ * @route GET /channel/:id
  * @param {Channel id} req.params
  */
 exports.channel_getOne = async (req, res) => {
     try {
-        const channel = await Channel.findById({ _id: req.params.id });
+        const channel = await Channel.findById({ _id: req.params.id }).populate('messages');
         if (!channel) throw "channel not found!";
 
         res.json(channel);
@@ -176,7 +182,7 @@ exports.channel_addUser = async (req, res) => {
         } else {
             let user = User.findById(users);
             user.channels.push(channel);
-            
+
             await user.save();
         }
 

@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import Chat from "../Chat/Chat";
 
-import {Col, Divider, Row} from "antd";
+import {Col, Row} from "antd";
 
 
 export default class MainPage extends React.Component{
@@ -20,6 +20,7 @@ export default class MainPage extends React.Component{
 
     handleChannelClick = (channelId) => {
         this.setState({shownChannelId : channelId})
+
     }
 
     render(){

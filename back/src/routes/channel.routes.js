@@ -4,12 +4,12 @@ const router = express.Router();
 
 const ChannelController = require('../controllers/channel.controller');
 
-router.post('/create', checkAuth, ChannelController.channel_create_empty); //create empty channel
-router.post('/create_with/:id', checkAuth, ChannelController.channel_create_withOne); 
-router.put('/update/:id', ChannelController.channel_update);
-router.delete('/delete/:id', ChannelController.channel_delete);
+router.post('/', checkAuth, ChannelController.channel_create_empty); //create empty channel
+router.post('/:id', checkAuth, ChannelController.channel_create_withOne);
+router.put('/:id', ChannelController.channel_update);
+router.delete('/:id', ChannelController.channel_delete);
 router.put('/addUser/:id', ChannelController.channel_addUser);
-router.get('/getOne/:id', ChannelController.channel_getOne);
-router.get('/getAll', ChannelController.channel_getAll);
+router.get('/', ChannelController.channel_getAll);
+router.get('/:id', ChannelController.channel_getOne);
 
 module.exports = router;

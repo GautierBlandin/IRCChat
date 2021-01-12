@@ -4,7 +4,7 @@ const Message = require('../models/message.model');
 
 /**
  * @desc Create Message
- * @route POST /message/create/:channelId
+ * @route POST /message/:channelId
  * @param {Channel channelId} req.params
  * @param {String content} req.body
  */
@@ -25,11 +25,11 @@ exports.message_create = async (req, res) => {
             "content": req.body.content,
             "isActive": true
         });
-        
+
         await newMessage.save();
 
-        currentUser.messages.push(newMessage);
-        channel.messages.push(newMessage);
+        currentUser.messages.unshift(newMessage);
+        channel.messages.unshift(newMessage);
 
         await currentUser.save();
         await channel.save();
@@ -42,7 +42,7 @@ exports.message_create = async (req, res) => {
 
 /**
  * @desc Get specified message
- * @route GET /message/getOne/:id
+ * @route GET /message/:id
  * @param {Message id} req.params
  */
 exports.message_getOne = async (req, res) => {
@@ -58,7 +58,7 @@ exports.message_getOne = async (req, res) => {
 
 /**
  * @desc Get all messages
- * @route GET /message/getAll
+ * @route GET /message/
  */
 exports.message_getAll = async (req, res) => {
     try {
@@ -73,7 +73,7 @@ exports.message_getAll = async (req, res) => {
 
 /**
  * @desc Update specified message
- * @route PUT /message/update/:id
+ * @route PUT /message/:id
  * @param {Message id} req.params
  */
 exports.message_update = async (req, res) => {
@@ -92,7 +92,7 @@ exports.message_update = async (req, res) => {
 
 /**
  * @desc Delete specified message
- * @route DELETE /message/delete/:id
+ * @route DELETE /message/:id
  * @param {Message id} req.params
  */
 exports.message_delete = async (req, res) => {
