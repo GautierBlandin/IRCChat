@@ -9,10 +9,10 @@ const User = require('../models/user.model');
  */
 exports.auth_register = async (req, res) => {
     try {
-        await User.findOne({email: req.body.email}, async function (err, user) {
-            if(err) console.log(err);
-            
-            if(!user){
+        await User.findOne({ email: req.body.email }, async function (err, user) {
+            if (err) console.log(err);
+
+            if (!user) {
                 await bcrypt.hash(req.body.password, 10, function (err, cryptedPassword) {
                     req.body.password = cryptedPassword;
                     req.body.role = "user";
@@ -51,15 +51,15 @@ exports.auth_register = async (req, res) => {
  */
 exports.auth_login = async (req, res) => {
     try {
-        await User.findOne({email: req.body.email}, async function (err, user) {
-            if(err){
+        await User.findOne({ email: req.body.email }, async function (err, user) {
+            if (err) {
                 console.log(err);
             }
 
-            if(user) {
-                if(await bcrypt.compare(req.body.password, user.password)){
-                    
-                    const token = jwt.sign({id: user.id}, process.env.ACCESS_TOKEN_SECRET);
+            if (user) {
+                if (await bcrypt.compare(req.body.password, user.password)) {
+
+                    const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET);
 
                     res.header('auth-token', token).send(token);
                 } else {
@@ -74,7 +74,25 @@ exports.auth_login = async (req, res) => {
                     error: "User does not exist"
                 });
             }
-        })    
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error on the server");
+    }
+}
+
+/**
+ * @description 
+ * @route GET /me
+ */
+exports.auth_token = async (req, res) => {
+    try {
+        const currentUserId = req.user.id;
+
+        const currentUser = await User.findById(currentUserId);
+        if (!currentUser) throw "Current user or requested user does not exist!";
+
+        res.status(200).json(currentUser);
     } catch (error) {
         console.log(error);
         res.status(500).send("Error on the server");
