@@ -6,10 +6,17 @@ import { UserOutlined } from '@ant-design/icons';
 export default class ChatBody extends React.Component{
     constructor(props) {
         super(props);
+        this.receiveMessage();
     }
 
     componentDidMount() {
 
+    }
+
+    receiveMessage(){
+        this.props.socket.on('message', (message) => {
+            console.log(message.content);
+        })
     }
 
     Message = (message) =>{

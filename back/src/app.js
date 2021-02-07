@@ -41,7 +41,7 @@ const io = SocketIo(server, {
     }
 });
 
-const User = require('../models/user.model');
+const User = require('/models/user.model');
 const Message = require('../models/message.model');
 
 io.on("connection", (socket) => {
@@ -49,8 +49,6 @@ io.on("connection", (socket) => {
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     socket.userId = payload.id;
-
-    console.log("Connected: " + socket.userId ?? '');
 
     socket.on('channel_join', ({ channelId }) => {
 
@@ -68,8 +66,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
-        if(message !== '') console.log('message: ' + message);
-
         const user = await User.findOne({ _id: socket.userId });
 
         const newMessage = new Message({
@@ -79,10 +75,7 @@ io.on("connection", (socket) => {
             isActive: true
         });
 
-        io.to(channelId).emit('message', {
-            message,
-            user: user,
-        });
+        io.to(channelId).emit('message', message);
 
         await newMessage.save();
     });

@@ -1,7 +1,5 @@
 const express = require('express');
-const checkAuth = require('../security/verifyToken.security');
 const router = express.Router();
-
 const AuthController = require('../controllers/auth.controller');
 const checkAuth = require('../security/verifyToken.security');
 
