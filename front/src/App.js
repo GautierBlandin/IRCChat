@@ -4,6 +4,8 @@ import React from "react";
 import axios from "axios";
 import MainPage from "./components/MainPage/MainPage";
 import Register from "./Register";
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:8081";
 
 class  App extends React.Component{
     constructor(props) {

@@ -1,9 +1,11 @@
+const http = require("http");
 const app = require('express')();
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const connectDB = require('./config/db.config.js');
 require('dotenv').config({path: './src/config/config.env'});
+
 
 // Load database
 connectDB();
@@ -25,29 +27,38 @@ app.use('/channel', require('./routes/channel.routes'));
 app.use('/message', require('./routes/message.routes'));
 app.use('/friendRequest', require('./routes/friendRequest.routes'));
 
-const server = app.listen(process.env.SERVER_PORT, function () {
-    console.log("\x1b[44m%s\x1b[0m", "Starting Server on " + process.env.SERVER_PORT + " port");
-});
+const server = http.createServer(app);
 
-// Socket IO 
-const io = require('socket.io')(server);
-const jwt = require('jsonwebtoken');
+// Socket IO
+const SocketIo = require("socket.io");
 
-io.use(async(socket, next)=> {
-    try {
-        const token = socket.handshake.query.token;
-        const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        socket.userId = payload.id;
-        next();
-    } catch (error) {
-        console.log(error);
+const io = SocketIo(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
     }
 });
 
-io.on('connection', (socket) => {
-    console.log("Connected: " + socket.userId);
+let interval;
 
-    socket.on('disconnect', () => {
-        console.log("Disconnected: " + socket.userId);
-    })
-})
+io.on("connection", (socket) => {
+    console.log("New client connected");
+    if (interval) {
+        clearInterval(interval);
+    }
+    interval = setInterval(() => getApiAndEmit(socket), 1000);
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+        clearInterval(interval);
+    });
+});
+
+const getApiAndEmit = socket => {
+    const response = new Date();
+    // Emitting a new message. Will be consumed by the client
+    socket.emit("FromAPI", response);
+};
+
+server.listen(process.env.SERVER_PORT, function () {
+    console.log("\x1b[44m%s\x1b[0m", "Starting Server on " + process.env.SERVER_PORT + " port");
+});
