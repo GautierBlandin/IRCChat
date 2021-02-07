@@ -39,7 +39,7 @@ exports.channel_create_empty = async (req, res) => {
  * @desc Create Channel with current user at owner and requested user specified in params
  * @route POST /channel/create_withOne/:id
  * @param {User id} req.params
- * DEPRECATED
+ * !DEPRECATED
  */
 exports.channel_create_withOne = async (req, res) => {
     try {

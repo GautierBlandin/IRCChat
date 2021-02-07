@@ -2,13 +2,27 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
+        mongoose.connection.on('connecting', () => { 
+            console.log('[database] connecting')
+        });
+
+        mongoose.connection.on('connected', () => {
+            console.log('[database] connected');
+        });
+
+        mongoose.connection.on('disconnecting', () => {
+            console.log('[database] disconnecting');
+        });
+
+        mongoose.connection.on('disconnected', () => {
+            console.log('[database] disconnected');
+        });
+
         const connection = await mongoose.connect(process.env.DB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false
         });
-
-        console.log("\x1b[44m%s\x1b[0m", "Connecting Database on " + connection.connection.host);
     } catch (error) {
         console.error(error);
         process.exit(1);
