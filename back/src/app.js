@@ -52,12 +52,19 @@ io.on("connection", (socket) => {
 
     console.log("Connected: " + socket.userId ?? '');
 
-    socket.on('channel_join', (channelId) => {
+    socket.on('channel_join', ({ channelId }) => {
 
         socket.join(channelId);
 
         socket.emit('message', formatMessage('Welcome to chat!'));
-        socket.broadcast.to(channelId).emit('message', formatMessage('A user has joined the channel'));
+        socket.broadcast.to(channelId).emit('message', formatMessage('User has joined the channel'));
+    });
+
+    socket.on('channel_left', ({ channelId }) => {
+
+        socket.leave(channelId);
+
+        socket.broadcast.to(channelId).emit('message', formatMessage('User has left the channel'));
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
@@ -70,7 +77,7 @@ io.on("connection", (socket) => {
             user: user,
             content: message,
             isActive: true
-          });
+        });
 
         io.to(channelId).emit('message', {
             message,
