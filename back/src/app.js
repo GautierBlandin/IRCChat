@@ -41,36 +41,47 @@ const io = SocketIo(server, {
     }
 });
 
+const User = require('../models/user.model');
+const Message = require('../models/message.model');
+
 io.on("connection", (socket) => {
     const token = socket.handshake.query.token;
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     socket.userId = payload.id;
 
-    socket.on('channel_join', (channelId), callback => {
-        socket.channelId = channelId;
+    console.log("Connected: " + socket.userId ?? '');
 
-        if (error) return callback(error);
-
-        socket.emit('message', formatMessage('Welcome to chat!'));
+    socket.on('channel_join', (channelId) => {
 
         socket.join(channelId);
 
+        socket.emit('message', formatMessage('Welcome to chat!'));
         socket.broadcast.to(channelId).emit('message', formatMessage('A user has joined the channel'));
-
-        callback();
     });
 
-    socket.on('message_send', (message, callback) => {
+    socket.on('message_send', async ({ channelId, message }) => {
         if(message !== '') console.log('message: ' + message);
 
-        io.to(socket.channelId).emit('message', { text: message });
+        const user = await User.findOne({ _id: socket.userId });
 
-        callback();
+        const newMessage = new Message({
+            channel: channelId,
+            user: user,
+            content: message,
+            isActive: true
+          });
+
+        io.to(channelId).emit('message', {
+            message,
+            user: user,
+        });
+
+        await newMessage.save();
     });
 
     socket.on("disconnect", () => {
-        console.log("Client disconnected");
+        console.log("Disconnected: " + socket.userId);
     });
 });
 
