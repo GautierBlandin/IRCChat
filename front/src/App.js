@@ -11,7 +11,8 @@ class  App extends React.Component{
     constructor(props) {
         super(props);
         this.state = {logged_in : false,
-        user : {}}
+        user : {},
+        socket : {}}
     }
 
     componentDidMount() {
@@ -29,13 +30,17 @@ class  App extends React.Component{
                 });
             }
         })
+
+        let socket = socketIOClient(ENDPOINT, {query : {token : localStorage.getItem('token')}});
+        this.setState({socket : socket})
     }
+
 
     render() {
         if(this.state.logged_in){
             return (
                 <div className={"App"}>
-                    <MainPage user = {this.state.user}/>
+                    <MainPage user = {this.state.user} socket = {this.state.socket}/>
                 </div>
             );
         }

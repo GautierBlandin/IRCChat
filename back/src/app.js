@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const connectDB = require('./config/db.config.js');
 require('dotenv').config({path: './src/config/config.env'});
+const jwt = require('jsonwebtoken');
 
 
 // Load database
@@ -32,6 +33,7 @@ const server = http.createServer(app);
 // Socket IO
 const SocketIo = require("socket.io");
 
+
 const io = SocketIo(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -39,25 +41,19 @@ const io = SocketIo(server, {
     }
 });
 
-let interval;
-
 io.on("connection", (socket) => {
     console.log("New client connected");
-    if (interval) {
-        clearInterval(interval);
-    }
-    interval = setInterval(() => getApiAndEmit(socket), 1000);
+    const token = socket.handshake.query.token;
+    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    socket.userId = payload.id;
     socket.on("disconnect", () => {
         console.log("Client disconnected");
-        clearInterval(interval);
+    });
+    socket.on('message', (msg) => {
+        if(msg !== '') console.log('message: ' + msg);
+        console.log(console.id);
     });
 });
-
-const getApiAndEmit = socket => {
-    const response = new Date();
-    // Emitting a new message. Will be consumed by the client
-    socket.emit("FromAPI", response);
-};
 
 server.listen(process.env.SERVER_PORT, function () {
     console.log("\x1b[44m%s\x1b[0m", "Starting Server on " + process.env.SERVER_PORT + " port");

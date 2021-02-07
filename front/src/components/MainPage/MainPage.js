@@ -53,7 +53,7 @@ export default class MainPage extends React.Component{
                     <Sidebar onChannelClick = {this.handleChannelClick} onChannelCreation = {this.handleChannelCreation} availableChannels = {this.state.availableChannels}/>
                 </Col>
                 <Col span = {19} className={"full-height"}>
-                    <Chat shownChannel = {this.state.shownChannel} user = {this.props.user}/>
+                    <Chat shownChannel = {this.state.shownChannel} user = {this.props.user} socket = {this.props.socket}/>
                 </Col>
             </Row>
         </div>)
