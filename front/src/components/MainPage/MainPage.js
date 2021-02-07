@@ -37,6 +37,7 @@ export default class MainPage extends React.Component{
             url: 'http://localhost:8081/channel/' + channelId,
             method : 'get'
         }).then(res => this.setState({shownChannel : res.data}))
+        this.props.socket.emit('channel_join', channelId)
     }
 
     handleChannelCreation = (channel) => {

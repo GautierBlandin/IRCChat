@@ -90,6 +90,9 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("Disconnected: " + socket.userId);
     });
+    socket.on('channel_join', (channelID) => {
+        console.log(channelID);
+    })
 });
 
 server.listen(process.env.SERVER_PORT, function () {
