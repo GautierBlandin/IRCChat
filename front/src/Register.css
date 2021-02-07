@@ -1,0 +1,14 @@
+.Col{
+    background-color : lightgray;
+    border-radius: 30px;
+    padding : 20px 20px 0 20px;
+
+}
+
+.link{
+    color : mediumblue;
+}
+
+.link:hover{
+    text-decoration: underline;
+}
