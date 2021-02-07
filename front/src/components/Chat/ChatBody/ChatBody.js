@@ -8,25 +8,8 @@ export default class ChatBody extends React.Component{
         super(props);
     }
 
-    message1 = {
-        user_id : 1,
-        user_nickname : 'Zac',
-        message : 'Tu en es où du projet ?',
-        is_user : false
-    }
+    componentDidMount() {
 
-    message2 = {
-        user_id : 2,
-        user_nickname : 'Gautier',
-        message : 'Regarde, on a un super front ! And today we are having a really great day here in New-York ! The sun is shining, the birds are singing',
-        is_user : true,
-    }
-
-    message3 = {
-        user_id : 1,
-        user_nickname : 'Zac',
-        message : 'Ah ouais c\'est top !',
-        is_user : false
     }
 
     Message = (message) =>{
@@ -40,20 +23,24 @@ export default class ChatBody extends React.Component{
     }
 
     render(){
+        if(this.props.shownChannel === undefined)
+        {return(<div></div>)}
+        else {
+            let messages = [];
+            this.props.shownChannel.messages.forEach((message) => messages.push({
+                user_id: message.user,
+                is_user: this.props.user.id === message.user,
+                message: message.content,
+                user_nickname: message.user.username,
+            }))
+            let renderedMessages = [];
+            messages.forEach(message => renderedMessages.push(this.Message(message)))
 
-        if(Object.entries(this.props.shownChannel).length === 0){
-            return(<div className="pt-4 position-relative">
-                {this.Message(this.message1)}
-                {this.Message(this.message2)}
-                {this.Message(this.message3)}
-                </div>
-                )
+            return (<div className="pt-4 position-relative">
+                    {renderedMessages}
+                    </div>
+            )
+
         }
-
-
-        return(<div>
-
-        </div>)
-
     }
 }

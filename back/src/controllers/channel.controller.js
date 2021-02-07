@@ -103,7 +103,7 @@ exports.channel_getAll = async (req, res) => {
  */
 exports.channel_getOne = async (req, res) => {
     try {
-        const channel = await Channel.findById({ _id: req.params.id }).populate('messages');
+        const channel = await Channel.findById({ _id: req.params.id }).populate({path : 'messages', populate : {path : 'user', select : 'username'}});
         if (!channel) throw "channel not found!";
 
         res.json(channel);

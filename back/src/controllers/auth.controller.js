@@ -88,7 +88,6 @@ exports.auth_login = async (req, res) => {
 exports.auth_token = async (req, res) => {
     try {
         const currentUserId = req.user.id;
-        console.log(currentUserId);
 
         const currentUser = await User.findOne({_id: currentUserId}, {password: 0});
         if (!currentUser) throw "Current user or requested user does not exist!";
