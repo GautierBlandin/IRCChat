@@ -56,15 +56,15 @@ io.on("connection", (socket) => {
 
         socket.join(channelId);
 
-        socket.emit('message', formatMessage('Welcome to chat!'));
-        socket.broadcast.to(channelId).emit('message', formatMessage('User has joined the channel'));
+        socket.emit('message', {text: 'Welcome to chat!'});
+        socket.broadcast.to(channelId).emit('message', {text: 'User has joined the channel'});
     });
 
     socket.on('channel_left', ({ channelId }) => {
 
         socket.leave(channelId);
 
-        socket.broadcast.to(channelId).emit('message', formatMessage('User has left the channel'));
+        socket.broadcast.to(channelId).emit('message', {text: 'User has left the channel'});
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
