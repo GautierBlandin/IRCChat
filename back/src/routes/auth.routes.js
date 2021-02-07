@@ -3,7 +3,6 @@ const checkAuth = require('../security/verifyToken.security');
 const router = express.Router();
 
 const AuthController = require('../controllers/auth.controller');
-const checkAuth = require('../security/verifyToken.security');
 
 router.post('/register', AuthController.auth_register);
 router.post('/login', AuthController.auth_login);
