@@ -33,14 +33,12 @@ const server = http.createServer(app);
 // Socket IO
 const SocketIo = require("socket.io");
 
-
 const io = SocketIo(server, {
     cors: {
         origin: "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 });
-
 
 const User = require('../src/models/user.model');
 const Message = require('../src/models/message.model');
@@ -75,13 +73,14 @@ io.on("connection", (socket) => {
     socket.on('message_send', async ({ channelId, message }) => {
         if (message !== '') console.log('message: ' + message);
 
+        // find all information of current user
         const user = await User.findOne({ _id: socket.userId });
 
         const newMessage = new Message({
-            channel: channelId,
-            user: user,
-            content: message,
-            isActive: true
+            "channel": channelId,
+            "user": user,
+            "content": message,
+            "isActive": true
         });
 
         // Detect command with "/" prefix
@@ -99,12 +98,12 @@ io.on("connection", (socket) => {
             }
         }
 
+        await newMessage.save();
+
         io.to(channelId).emit('message', {
             message,
             user: user,
         });
-
-        await newMessage.save();
     });
 
     socket.on("disconnect", () => {
