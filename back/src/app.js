@@ -51,19 +51,20 @@ io.on("connection", (socket) => {
 
     socket.userId = payload.id;
 
-    socket.on('channel_join', ({ channelId }) => {
+    socket.on('channel_join', (channelId) => {
 
         socket.join(channelId);
+        console.log(socket.userId + ' joined ' + channelId)
 
-        socket.emit('message', formatMessage('Welcome to chat!'));
-        socket.broadcast.to(channelId).emit('message', formatMessage('User has joined the channel'));
+        // socket.broadcast.to(channelId).emit('message', 'User has joined the channel');
     });
 
-    socket.on('channel_left', ({ channelId }) => {
+    socket.on('channel_left', (channelId) => {
 
         socket.leave(channelId);
+        console.log(socket.userId + ' left ' + channelId)
 
-        socket.broadcast.to(channelId).emit('message', formatMessage('User has left the channel'));
+        // socket.broadcast.to(channelId).emit('message', 'User has left the channel');
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
@@ -76,7 +77,7 @@ io.on("connection", (socket) => {
             isActive: true
         });
 
-        io.to(channelId).emit('message', message);
+        io.to(channelId).emit('message', newMessage);
 
         await newMessage.save();
     });
@@ -84,9 +85,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("Disconnected: " + socket.userId);
     });
-    socket.on('channel_join', (channelID) => {
-        console.log(channelID);
-    })
 });
 
 server.listen(process.env.SERVER_PORT, function () {
