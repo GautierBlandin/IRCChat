@@ -69,10 +69,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
-        socket.broadcast.to(channelId).emit('user_left', { userId: socket.userId, channelId: channelId });
-    });
-
-    socket.on('message_send', async ({ channelId, message }) => {
         if (message !== '') console.log('message: ' + message);
 
         // Command
@@ -99,9 +95,10 @@ io.on("connection", (socket) => {
             isActive: true
         });
 
-        io.to(channelId).emit('message', newMessage);
+        console.log(newMessage);
 
         await newMessage.save();
+        io.to(channelId).emit('message', newMessage);
     });
 
     socket.on("disconnect", () => {

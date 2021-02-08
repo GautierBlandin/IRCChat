@@ -6,15 +6,32 @@ import { UserOutlined } from '@ant-design/icons';
 export default class ChatBody extends React.Component{
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
+        this.state = {renderedMessages : []}
         this.receiveMessage();
     }
 
+    componentDidMount() {
+        if(this.props.shownChannel.messages) {
+            this.props.shownChannel.messages.forEach((message) => this.state.renderedMessages.push({
+                user_id: message.user,
+                is_user: this.props.user.id === message.user,
+                message: message.content,
+                user_nickname: message.user.username,
+            }))
+            this.setState({renderedMessages: this.state.messages})
+        }
+    }
+
     receiveMessage(){
+        console.log(this.state);
         this.props.socket.on('message', (message) => {
-            console.log(message);
+            this.state.renderedMessages.push({
+                    user_id: message.user._id,
+                    is_user: this.props.user._id === message.user._id,
+                    message: message.content,
+                    user_nickname: message.user.username,
+                });
+            this.setState({renderedMessages : this.state.renderedMessages});
         })
     }
 
@@ -29,18 +46,10 @@ export default class ChatBody extends React.Component{
     }
 
     render(){
-        if(this.props.shownChannel === undefined)
-        {return(<div></div>)}
-        else {
-            let messages = [];
-            this.props.shownChannel.messages.forEach((message) => messages.push({
-                user_id: message.user,
-                is_user: this.props.user.id === message.user,
-                message: message.content,
-                user_nickname: message.user.username,
-            }))
+            let messages = this.state.renderedMessages;
+
             let renderedMessages = [];
-            messages.forEach(message => renderedMessages.push(this.Message(message)))
+            if(this.state.renderedMessages) messages.forEach(message => renderedMessages.push(this.Message(message)))
 
             return (<div className="pt-4 position-relative">
                     {renderedMessages}
@@ -48,5 +57,4 @@ export default class ChatBody extends React.Component{
             )
 
         }
-    }
 }

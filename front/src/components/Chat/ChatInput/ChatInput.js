@@ -9,10 +9,12 @@ export default class ChatInput extends React.Component{
     }
 
     onSend = (value) => {
-        this.props.socket.emit('message_send', {
-            channelId : this.props.shownChannel._id,
-            message : value
-        });
+        if(value !== '') {
+            this.props.socket.emit('message_send', {
+                channelId: this.props.shownChannel._id,
+                message: value
+            });
+        }
     }
 
     render(){
