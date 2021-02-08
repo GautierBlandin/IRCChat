@@ -97,11 +97,7 @@ io.on("connection", (socket) => {
             }
         }
 
-        io.to(channelId).emit('message', {
-            message,
-            user: currentUser,
-        });
-
+        io.to(channelId).emit('message', newMessage);
 
         await newMessage.save();
 
@@ -110,7 +106,6 @@ io.on("connection", (socket) => {
 
         await currentUser.save();
         await channel.save();
-
     });
 
     socket.on("disconnect", () => {

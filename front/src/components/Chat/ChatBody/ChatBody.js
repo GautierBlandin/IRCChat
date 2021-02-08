@@ -25,6 +25,7 @@ export default class ChatBody extends React.Component{
     receiveMessage(){
         console.log(this.state);
         this.props.socket.on('message', (message) => {
+            console.log(message)
             this.state.renderedMessages.push({
                     user_id: message.user._id,
                     is_user: this.props.user._id === message.user._id,
