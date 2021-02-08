@@ -41,6 +41,7 @@ const io = SocketIo(server, {
     }
 });
 
+
 const User = require('../src/models/user.model');
 const Message = require('../src/models/message.model');
 
@@ -50,20 +51,24 @@ io.on("connection", (socket) => {
 
     socket.userId = payload.id;
 
-    console.log("Connected: " + socket.userId ?? '');
-
-    socket.on('channel_join', ({ channelId }) => {
+    socket.on('channel_join', (channelId) => {
 
         socket.join(channelId);
+        console.log(socket.userId + ' joined ' + channelId)
 
-        socket.emit('message', { text: 'Welcome to chat!' });
-        socket.broadcast.to(channelId).emit('user_join', { userId: socket.userId, channelId: channelId });
+        socket.broadcast.to(channelId).emit('user_joined', { userId: socket.userId, channelId: channelId });
+
     });
 
-    socket.on('channel_left', ({ channelId }) => {
+    socket.on('channel_left', (channelId) => {
 
         socket.leave(channelId);
+        console.log(socket.userId + ' left ' + channelId)
 
+        socket.broadcast.to(channelId).emit('user_left', { userId: socket.userId, channelId: channelId });
+    });
+
+    socket.on('message_send', async ({ channelId, message }) => {
         socket.broadcast.to(channelId).emit('user_left', { userId: socket.userId, channelId: channelId });
     });
 

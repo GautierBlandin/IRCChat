@@ -9,7 +9,13 @@ export default class ChatBody extends React.Component{
     }
 
     componentDidMount() {
+        this.receiveMessage();
+    }
 
+    receiveMessage(){
+        this.props.socket.on('message', (message) => {
+            console.log(message);
+        })
     }
 
     Message = (message) =>{

@@ -31,12 +31,14 @@ export default class MainPage extends React.Component{
         })
     }
 
-    handleChannelClick = (channelId) => {
+    handleChannelClick = (channelId, leftChannelId) => {
         this.setState({shownChannelId : channelId})
         axios({
             url: 'http://localhost:8081/channel/' + channelId,
             method : 'get'
         }).then(res => this.setState({shownChannel : res.data}))
+        if(leftChannelId) this.props.socket.emit('channel_left', leftChannelId)
+        this.props.socket.emit('channel_join', channelId)
     }
 
     handleChannelCreation = (channel) => {
@@ -50,7 +52,11 @@ export default class MainPage extends React.Component{
                 <Header/>
             <Row className = "full-height">
                 <Col span = {5} className="full-height">
-                    <Sidebar onChannelClick = {this.handleChannelClick} onChannelCreation = {this.handleChannelCreation} availableChannels = {this.state.availableChannels}/>
+                    <Sidebar onChannelClick = {this.handleChannelClick}
+                             onChannelCreation = {this.handleChannelCreation}
+                             availableChannels = {this.state.availableChannels}
+                             shownChannel = {this.state.shownChannel}
+                    />
                 </Col>
                 <Col span = {19} className={"full-height"}>
                     <Chat shownChannel = {this.state.shownChannel} user = {this.props.user} socket = {this.props.socket}/>
