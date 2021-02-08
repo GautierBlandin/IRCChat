@@ -57,18 +57,22 @@ io.on("connection", (socket) => {
         socket.join(channelId);
 
         socket.emit('message', {text: 'Welcome to chat!'});
-        socket.broadcast.to(channelId).emit('message', {text: 'User has joined the channel'});
+        socket.broadcast.to(channelId).emit('user_join', {userId: socket.userId, channelId: channelId});
     });
 
     socket.on('channel_left', ({ channelId }) => {
 
         socket.leave(channelId);
 
-        socket.broadcast.to(channelId).emit('message', {text: 'User has left the channel'});
+        socket.broadcast.to(channelId).emit('user_left', {userId: socket.userId, channelId: channelId});
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
-        if(message !== '') console.log('message: ' + message);
+        if (message !== '') console.log('message: ' + message);
+
+        if (message.startsWith('/')) {
+            
+        }
 
         const user = await User.findOne({ _id: socket.userId });
 
