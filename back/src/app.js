@@ -42,6 +42,7 @@ const io = SocketIo(server, {
 
 const User = require('../src/models/user.model');
 const Message = require('../src/models/message.model');
+const Channel = require('../src/models/channel.model');
 
 io.on("connection", (socket) => {
     const token = socket.handshake.query.token;
