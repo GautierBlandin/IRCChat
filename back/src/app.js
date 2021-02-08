@@ -70,7 +70,16 @@ io.on("connection", (socket) => {
     socket.on('message_send', async ({ channelId, message }) => {
         if (message !== '') console.log('message: ' + message);
 
-        // Command
+        const user = await User.findOne({ _id: socket.userId });
+
+        const newMessage = new Message({
+            channel: channelId,
+            user: user,
+            content: message,
+            isActive: true
+        });
+
+        // Detect command with "/" prefix
         if (message.startsWith('/')) {
             if (message.includes("help", 1)) {
                 message = 'w.i.p';
@@ -84,15 +93,6 @@ io.on("connection", (socket) => {
                 message = 'ಠ_ಠ';
             }
         }
-
-        const user = await User.findOne({ _id: socket.userId });
-
-        const newMessage = new Message({
-            channel: channelId,
-            user: user,
-            content: message,
-            isActive: true
-        });
 
         io.to(channelId).emit('message', {
             message,
