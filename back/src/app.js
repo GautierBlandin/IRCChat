@@ -74,11 +74,13 @@ io.on("connection", (socket) => {
         if (message !== '') console.log('message: ' + message);
 
         // find all information of current user
-        const user = await User.findOne({ _id: socket.userId });
+        const currentUser = await User.findOne({ _id: socket.userId });
+
+        const channel = await Channel.findById(channelId);
 
         const newMessage = new Message({
             "channel": channelId,
-            "user": user,
+            "user": currentUser,
             "content": message,
             "isActive": true
         });
@@ -98,12 +100,18 @@ io.on("connection", (socket) => {
             }
         }
 
-        await newMessage.save();
-
         io.to(channelId).emit('message', {
             message,
-            user: user,
+            user: currentUser,
         });
+
+        await newMessage.save();
+
+        currentUser.messages.unshift(newMessage);
+        channel.messages.unshift(newMessage);
+
+        await currentUser.save();
+        await channel.save();
     });
 
     socket.on("disconnect", () => {
