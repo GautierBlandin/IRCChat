@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const connectDB = require('./config/db.config.js');
-require('dotenv').config({path: './src/config/config.env'});
+require('dotenv').config({ path: './src/config/config.env' });
 const jwt = require('jsonwebtoken');
 
 
@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 connectDB();
 
 // Setup CORS options
-const corsOptions = {origin: "*"};
+const corsOptions = { origin: "*" };
 
 // Load CORS with options
 app.use(cors(corsOptions));
@@ -56,7 +56,8 @@ io.on("connection", (socket) => {
         socket.join(channelId);
         console.log(socket.userId + ' joined ' + channelId)
 
-        // socket.broadcast.to(channelId).emit('message', 'User has joined the channel');
+        socket.broadcast.to(channelId).emit('user_joined', { userId: socket.userId, channelId: channelId });
+
     });
 
     socket.on('channel_left', (channelId) => {
@@ -64,10 +65,31 @@ io.on("connection", (socket) => {
         socket.leave(channelId);
         console.log(socket.userId + ' left ' + channelId)
 
-        // socket.broadcast.to(channelId).emit('message', 'User has left the channel');
+        socket.broadcast.to(channelId).emit('user_left', { userId: socket.userId, channelId: channelId });
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
+        socket.broadcast.to(channelId).emit('user_left', { userId: socket.userId, channelId: channelId });
+    });
+
+    socket.on('message_send', async ({ channelId, message }) => {
+        if (message !== '') console.log('message: ' + message);
+
+        // Command
+        if (message.startsWith('/')) {
+            if (message.includes("help", 1)) {
+                message = 'w.i.p';
+            } else if (message.includes("ping", 1)) {
+                message = 'pong!';
+            } else if (message.includes("shrug", 1)) {
+                message = '¯\_(ツ)_/¯';
+            } else if (message.includes("lenny", 1)) {
+                message = '( ͡° ͜ʖ ͡°)';
+            } else if (message.includes("disapproval", 1)) {
+                message = 'ಠ_ಠ';
+            }
+        }
+
         const user = await User.findOne({ _id: socket.userId });
 
         const newMessage = new Message({
