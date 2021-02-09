@@ -28,7 +28,6 @@ export default function ChatBody(props){
     }, [messages])
 
     useEffect(() => {
-        let updateRealTimeMessages = [];
         props.socket.on('message', (message) => {
             let newMessage = {
                 user_id: message.user._id,
@@ -36,7 +35,28 @@ export default function ChatBody(props){
                 message: message.content,
                 user_nickname: message.user.username,
             }
-            setMessages((messages) => [...messages, newMessage]);
+            let newRenderedMessage = Message(newMessage);
+            setRenderedMessages((messages) => [...messages, newRenderedMessage]);
+        })
+    }, [])
+
+    useEffect(() => {
+        props.socket.on('user_joined',(object) => {
+            console.log(object)
+            let userJoined = <div className="serverMessage">
+                {object.user.username} has joined
+            </div>
+            setRenderedMessages((renderedMessages) => [...renderedMessages, userJoined])
+        })
+    }, [])
+
+    useEffect(() => {
+        props.socket.on('user_left',(object) => {
+            console.log(object)
+            let userLeft = <div className="serverMessage">
+                {object.user.username} has left
+            </div>
+            setRenderedMessages((renderedMessages) => [...renderedMessages, userLeft])
         })
     }, [])
 

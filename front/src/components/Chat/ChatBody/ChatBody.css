@@ -56,15 +56,24 @@
 
 .userName, .userNameOther{
     color : grey;
-    font-style : italic;
+    /*font-style : italic;*/
     font-size: 14px;
-    margin-bottom: -6px;
+    margin-bottom: -4px;
+    margin-top : 5px;
 }
 
 .userName{
-    margin-left: 60px;
+    margin-left: 50px;
 }
 
 .userNameOther{
-    margin-right: 60px;
+    margin-right: 50px;
+}
+
+.serverMessage{
+    color : grey;
+    font-style : italic;
+    font-size: 15px;
+    text-align: center;
+    padding: 5px;
 }

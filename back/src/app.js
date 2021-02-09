@@ -44,19 +44,20 @@ const User = require('../src/models/user.model');
 const Message = require('../src/models/message.model');
 const Channel = require('../src/models/channel.model');
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket)  => {
     const token = socket.handshake.query.token;
     console.log('token:' + token);
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     socket.userId = payload.id;
+    socket.user = await User.findById(payload.id);
 
     socket.on('channel_join', (channelId) => {
 
         socket.join(channelId);
         console.log(socket.userId + ' joined ' + channelId)
 
-        socket.broadcast.to(channelId).emit('user_joined', { userId: socket.userId, channelId: channelId });
+        socket.broadcast.to(channelId).emit('user_joined', { user: socket.user, channelId: channelId });
 
     });
 
@@ -65,7 +66,7 @@ io.on("connection", (socket) => {
         socket.leave(channelId);
         console.log(socket.userId + ' left ' + channelId)
 
-        socket.broadcast.to(channelId).emit('user_left', { userId: socket.userId, channelId: channelId });
+        socket.broadcast.to(channelId).emit('user_left', { user: socket.user, channelId: channelId });
     });
 
     socket.on('message_send', async ({ channelId, message }) => {
