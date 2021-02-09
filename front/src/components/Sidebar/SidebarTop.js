@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, Form, Input, Modal, Row} from "antd";
+import {Button, Col, Divider, Form, Input, Modal, Row} from "antd";
 import {PlusOutlined, PoweroffOutlined, UserOutlined} from "@ant-design/icons";
 import axios from "axios";
 
@@ -57,7 +57,7 @@ export class SidebarTop extends React.Component{
             <Button onClick={this.showModal} shape = "circle" type="primary" icon={<PlusOutlined />}/>
         </Col>
         <Modal visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
-            <div className={"text-center"}>Create a channel</div>
+            <div className={"text-center"}><h4>Create a channel</h4></div>
             <Form
                 name="normal_login"
                 className=""
@@ -86,6 +86,16 @@ export class SidebarTop extends React.Component{
                     </Button>
                 </Form.Item>
             </Form>
+            <Divider/>
+            <div className={"text-center"}><h4>Join a channel</h4></div>
+            <Input.Search
+                size = "medium"
+                enterButton="Join"
+                onSearch={value => {
+                    this.props.onChannelJoin(this.props.user, value);
+                    this.handleCancel();
+                }}
+            />
         </Modal>
     </Row>)
     }

@@ -172,22 +172,25 @@ exports.channel_addUser = async (req, res) => {
         });
         if (!channel) throw "channel not found!";
 
-        if (Array.isArray(users)) {
-            users.forEach(async userId => {
-                let user = User.findById(userId);
-                user.channels.push(channel);
-
-                await user.save();
-            });
-        } else {
-            let user = User.findById(users);
+        // if (Array.isArray(users)) {
+        //     users.forEach(async userId => {
+        //         let user = User.findById(userId);
+        //         user.channels.push(channel);
+        //
+        //         await user.save();
+        //     });
+        // } else {
+            const user = await User.findById(users._id);
+            console.log('user id :' + users._id);
+            console.log(user);
             user.channels.push(channel);
 
             await user.save();
-        }
+        // }
 
         res.json(channel);
     } catch (error) {
+        console.log(error)
         res.status(404).json("Error: " + error);
     }
 }

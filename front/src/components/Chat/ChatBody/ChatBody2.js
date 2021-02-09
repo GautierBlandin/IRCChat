@@ -10,9 +10,9 @@ export default function ChatBody(props){
     useEffect(() => {
         let updatedMessages = [];
         props.shownChannel.messages.forEach((message) => {
-            updatedMessages.push({
+            updatedMessages.unshift({
             user_id: message.user,
-            is_user: props.user._id === message.user,
+            is_user: props.user._id === message.user._id,
             message: message.content,
             user_nickname: message.user.username,
         })})
@@ -22,14 +22,12 @@ export default function ChatBody(props){
     )
 
     useEffect( () => {
-        console.log('been called');
         let updatedRenderedMessages = [];
         messages.forEach(message => updatedRenderedMessages.push(Message(message)))
         setRenderedMessages(updatedRenderedMessages)
     }, [messages])
 
     useEffect(() => {
-        console.log('test')
         let updateRealTimeMessages = [];
         props.socket.on('message', (message) => {
             let newMessage = {
@@ -45,14 +43,18 @@ export default function ChatBody(props){
     let Message = (message) =>{
         let cssClass = (message.is_user ? "message" : "messageOther")
         let cssClass2 = (message.is_user? "messageContainer" : "messageOtherContainer")
-        return(<div className={cssClass2}>
+        let cssClass3 = (message.is_user? "userName" : "userNameOther")
+        return(
+                <div className={cssClass2}>
+                    <div className={cssClass3}>{message.user_nickname}</div>
             <div className={cssClass}>
-                {message.user_nickname}: {message.message}
+                {message.message}
             </div>
-        </div>)
+        </div>
+           )
     }
 
-    return (<div className="pt-4 position-relative">
+    return (<div className="pt-4 position-relative ChatBody">
             {renderedMessages}
         </div>
     )

@@ -1,5 +1,29 @@
 .ChatBody {}
 
+.ChatBody {
+    height: 80vh;
+    overflow-y: overlay;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius : 13px;
+}
+
+.ChatBody:hover::-webkit-scrollbar-thumb {
+    background: blue;
+}
+
+
 .anticon{
     vertical-align: 0.1em;
 }
@@ -30,3 +54,17 @@
     text-align: right;
 }
 
+.userName, .userNameOther{
+    color : grey;
+    font-style : italic;
+    font-size: 14px;
+    margin-bottom: -6px;
+}
+
+.userName{
+    margin-left: 60px;
+}
+
+.userNameOther{
+    margin-right: 60px;
+}

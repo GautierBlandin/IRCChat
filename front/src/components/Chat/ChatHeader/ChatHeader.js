@@ -14,7 +14,7 @@ export default class ChatHeader extends React.Component{
         }
 
         return(<Card className={"text-center"}>
-            <h3>The current channel ID : {this.props.shownChannel._id}</h3>
+            <h3>Welcome to {this.props.shownChannel.title}</h3>
         </Card>)
 
 

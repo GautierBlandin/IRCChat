@@ -13,7 +13,7 @@ export default class Chat extends React.Component{
         if(this.props.shownChannel !== undefined){
             return(<div className={"full-height"}>
                 <ChatHeader {...this.props}/>
-                <ChatBody {...this.props}/>
+                <ChatBody {...this.props} />
                 <ChatInput {...this.props}/>
             </div>)
         }else{

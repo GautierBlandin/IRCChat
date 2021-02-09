@@ -46,6 +46,7 @@ const Channel = require('../src/models/channel.model');
 
 io.on("connection", (socket) => {
     const token = socket.handshake.query.token;
+    console.log('token:' + token);
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     socket.userId = payload.id;
@@ -75,13 +76,6 @@ io.on("connection", (socket) => {
 
         const channel = await Channel.findById(channelId);
 
-        const newMessage = new Message({
-            "channel": channelId,
-            "user": currentUser,
-            "content": message,
-            "isActive": true
-        });
-
         // Detect command with "/" prefix
         if (message.startsWith('/')) {
             if (message.includes("help", 1)) {
@@ -96,6 +90,12 @@ io.on("connection", (socket) => {
                 message = 'ಠ_ಠ';
             }
         }
+        const newMessage = new Message({
+            "channel": channelId,
+            "user": currentUser,
+            "content": message,
+            "isActive": true
+        });
 
         io.to(channelId).emit('message', newMessage);
 

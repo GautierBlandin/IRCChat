@@ -4,15 +4,13 @@ import React from "react";
 import axios from "axios";
 import MainPage from "./components/MainPage/MainPage";
 import Register from "./Register";
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:8081";
 
 class  App extends React.Component{
     constructor(props) {
         super(props);
         this.state = {logged_in : false,
         user : {},
-        socket : {}}
+        }
     }
 
     componentDidMount() {
@@ -31,8 +29,6 @@ class  App extends React.Component{
             }
         })
 
-        let socket = socketIOClient(ENDPOINT, {query : {token : localStorage.getItem('token')}});
-        this.setState({socket : socket})
     }
 
 
